@@ -46,7 +46,7 @@
     //Change the bots default settings and make sure they are loaded on launch
 
     localStorage.setItem("basicBotsettings", JSON.stringify({
-        botName: 'basicBot',
+        botName: 'mizBot',
         language: 'english',
         chatLink: 'https://rawgit.com/basicBot/source/master/lang/en.json',
         scriptLink: 'https://rawgit.com/yesyesnononoyes/custom/master/basicBot.js',
@@ -56,7 +56,7 @@
         startupEmoji: false, // true or false
         autowoot: true,
         autoskip: false,
-        smartSkip: true,
+        smartSkip: false,
         cmdDeletion: true,
         maximumAfk: 120,
         afkRemoval: false,
@@ -69,7 +69,7 @@
         cycleGuard: true,
         maximumCycletime: 10,
         voteSkip: false,
-        voteSkipLimit: 10,
+        voteSkipLimit: 35,
         historySkip: false,
         timeGuard: true,
         strictTimeGuard: true,
@@ -115,6 +115,6 @@
     }));
 
     // Start the bot and extend it when it has loaded.
-    $.getScript("https://rawgit.com/yesyesnononoyes/custom/master/basicBot.js", extend);
+    $.getScript("https://rawgit.com/yesyesnononoyes/custom/master/bot.js", extend);
 
 }).call(this);
