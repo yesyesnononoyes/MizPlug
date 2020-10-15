@@ -25,8 +25,9 @@
     };
 
     var checkYT = function(e, m) {
+        ytkey = localStorage('ytkey');
         $.ajax({
-            url: 'https://www.googleapis.com/youtube/v3/videos?part=statistics&id=' + e + '&key= ' + localStorage('ytkey')
+            url: 'https://www.googleapis.com/youtube/v3/videos?part=statistics&id=' + e + '&key= ' + ytkey
         }).then(function(data) {
             views = data.items[0].statistics.viewCount;
             minViews = localStorage.getItem('minviews');
@@ -41,8 +42,9 @@
 
 
     var checkSC = function(e, m) {
+        sckey = localStorage.getItem('sckey');
         $.ajax({
-            url: 'https://api.soundcloud.com/tracks/' + e + '?client_id=' + localStorage.getItem('sckey')
+            url: 'https://api.soundcloud.com/tracks/' + e + '?client_id=' + sckey
         }).then(function(data) {
             views = data.playback_count;
             minViews = localStorage.getItem('minviews');
@@ -244,7 +246,7 @@
         status: false,
         name: 'mizBot',
         loggedInID: null,
-        scriptLink: 'https://raw.githack.com/yesyesnononoyes/custom/master/basicBot.js',
+        scriptLink: 'https://raw.githack.com/yesyesnononoyes/custom/master/bot.js',
         cmdLink: 'http://git.io/245Ppg',
         chatLink: 'https://raw.githack.com/basicBot/source/master/lang/en.json',
         chat: null,
@@ -252,10 +254,10 @@
         retrieveSettings: retrieveSettings,
         retrieveFromStorage: retrieveFromStorage,
         settings: {
-            botName: 'basicBot',
+            botName: 'mizBot',
             language: 'english',
-            chatLink: 'https://raw.githack.com/yesyesnononoyes/source/master/lang/en.json',
-            scriptLink: 'https://raw.githack.com/yesyesnononoyes/source/master/basicBot.js',
+            chatLink: 'https://raw.githack.com/basicBot/source/master/lang/en.json',
+            scriptLink: 'https://raw.githack.com/yesyesnononoyes/custom/master/master/bot.js',
             roomLock: false, // Requires an extension to re-load the script
             startupCap: 1, // 1-200
             startupVolume: 0, // 0-100
@@ -1014,6 +1016,7 @@
             var blacklistSkip = setTimeout(function() {
                 var mid = obj.media.format + ':' + obj.media.cid;
                 for (var bl in basicBot.room.blacklists) {
+                    console.log(bl)
                     if (basicBot.settings.blacklistEnabled) {
                         if (basicBot.room.blacklists[bl].indexOf(mid) > -1) {
                             API.sendChat(subChat(basicBot.chat.isblacklisted, {
@@ -1513,7 +1516,7 @@
             })));
 
             if(localStorage.getItem('sckey') || localStorage.getItem('ytkey') == null) {
-                API.sendChat('One or more API keys is not set! These are needed to enable streamer mode!');
+                API.sendChat('An API Key has not been set! These are needed to enable streamer mode!');
             }
 
             if(localStorage.getItem('minviews') == null) {
@@ -1580,7 +1583,7 @@
             */
 
             streamerCommand: {
-                command: 'streamermode',
+                command: 'streammode',
                 rank: 'manager',
                 type: 'exact',
                 functionality: function(chat, cmd) {
@@ -1590,12 +1593,12 @@
                         if(localStorage.getItem('streamermode') == "false" || null) {
                             localStorage.setItem('streamermode', "true");
                             API.moderateDJCycle(false);
-                            API.sendChat('/me Streamer mode enabled!');
+                            API.sendChat('/me Stream mode enabled!');
                         } else {
                             // This also disables the view requirment
                             localStorage.setItem('streamermode', "false");
                             API.moderateDJCycle(true);
-                            API.sendChat('/me Streamer mode disabled!');
+                            API.sendChat('/me Stream mode disabled!');
                         }
 
                     }
@@ -3563,6 +3566,7 @@
                         else msg += 'OFF';
                         msg += '. ';
 
+
                         // TODO: Display more toggleable bot settings.
 
                         var launchT = basicBot.room.roomstats.launchTime;
@@ -3571,21 +3575,6 @@
                         msg += subChat(basicBot.chat.activefor, {
                             time: since
                         });
-
-                        /*
-                        // least efficient way to go about this, but it works :)
-                        if (msg.length > 250){
-                            firstpart = msg.substr(0, 250);
-                            secondpart = msg.substr(250);
-                            API.sendChat(firstpart);
-                            setTimeout(function () {
-                                API.sendChat(secondpart);
-                            }, 300);
-                        }
-                        else {
-                            API.sendChat(msg);
-                        }
-                        */
 
                         // This is a more efficient solution
                         if (msg.length > 250) {
