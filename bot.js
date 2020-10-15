@@ -31,7 +31,7 @@
         }).then(function(data) {
             var views = data.items[0].statistics.viewCount;
             API.chatLog(' Views: ' + views);
-            if(minViews > views) {
+            if (minViews > views) {
                 API.sendChat('@' + m + ' your song must have atleast ' + minViews + ' plays!')
                 API.moderateForceSkip();
             }
@@ -45,11 +45,11 @@
         }).then(function(data) {
             var views = data.playback_count;
             API.chatLog('Title: ' + data.title + ' Views: ' + data.playback_count);
-            if(minViews > views) {
+            if (minViews > views) {
                 API.sendChat('@' + m + ' your song must have atleast ' + minViews + ' plays!')
                 API.moderateForceSkip();
             }
-        });        
+        });
     }
 
     var storeToStorage = function() {
@@ -457,9 +457,9 @@
                 else {
                     switch (u.gRole) {
                         case 3000:
-                            return (1*(API.ROLE.HOST-API.ROLE.COHOST))+API.ROLE.HOST;
+                            return (1 * (API.ROLE.HOST - API.ROLE.COHOST)) + API.ROLE.HOST;
                         case 5000:
-                            return (2*(API.ROLE.HOST-API.ROLE.COHOST))+API.ROLE.HOST;
+                            return (2 * (API.ROLE.HOST - API.ROLE.COHOST)) + API.ROLE.HOST;
                     }
                 }
                 return 0;
@@ -872,11 +872,11 @@
             }
 
             if (botCreatorIDs.indexOf(user.id) > -1) {
-              console.log(true);
-                API.sendChat('@'+user.username+' '+':sparkles: :bow: :sparkles:');
+                console.log(true);
+                API.sendChat('@' + user.username + ' ' + ':sparkles: :bow: :sparkles:');
             } else if (basicBot.settings.welcome && greet) {
-              console.log(false);
-              console.log(botCreatorIDs);
+                console.log(false);
+                console.log(botCreatorIDs);
                 welcomeback ?
                     setTimeout(function(user) {
                         API.sendChat(subChat(basicBot.chat.welcomeback, {
@@ -1019,7 +1019,7 @@
                         basicBot.room.tgSkip = setTimeout(function() {
                             if (basicBot.settings.timeGuard) return API.moderateForceSkip();
                             return;
-                        }, basicBot.settings.maximumSongLength*60*1000);
+                        }, basicBot.settings.maximumSongLength * 60 * 1000);
                     }
                 }
             }, 2000);
@@ -1186,10 +1186,21 @@
                 for (var i = 0; i < basicBot.room.mutedUsers.length; i++) {
                     if (basicBot.room.mutedUsers[i] === chat.uid) isMuted = true;
                 }
+
+                // Actual filter
+                for (var j = 0; j < basicBot.chatUtilities.curses.length; j++) {
+                    if (msg === basicBot.chatUtilities.curses[j]) {
+                        API.moderateDeleteChat(chat.cid);
+                        API.moderateBanUser(chat.uid, 1, API.BAN.PERMA);
+                    }
+                }
+
                 if (isMuted) {
                     API.moderateDeleteChat(chat.cid);
                     return true;
                 }
+
+                // Lockdown
                 if (basicBot.settings.lockdownEnabled) {
                     if (perm === API.ROLE.NONE) {
                         API.moderateDeleteChat(chat.cid);
@@ -1320,7 +1331,7 @@
                 'gringo', 'fuder', 'foder', 'hua', 'ahue', 'modafuka', 'modafoka', 'mudafuka', 'mudafoka', 'ooooooooooooooo', 'foda'
             ],
             curses: [
-                'nigger', 'faggot', 'nigga', 'niqqa', 'motherfucker', 'modafocka'
+                'nigger', 'faggot', 'nigga', 'niqqa', 'niggar', 'f4g', ''
             ]
         },
         connectAPI: function() {
@@ -1480,10 +1491,10 @@
                 var minPerm;
                 switch (minRank) {
                     case 'admin':
-                        minPerm = (2*(API.ROLE.HOST-API.ROLE.COHOST))+API.ROLE.HOST;
+                        minPerm = (2 * (API.ROLE.HOST - API.ROLE.COHOST)) + API.ROLE.HOST;
                         break;
                     case 'ambassador':
-                        minPerm = (1*(API.ROLE.HOST-API.ROLE.COHOST))+API.ROLE.HOST;
+                        minPerm = (1 * (API.ROLE.HOST - API.ROLE.COHOST)) + API.ROLE.HOST;
                         break;
                     case 'host':
                         minPerm = API.ROLE.HOST;
