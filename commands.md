@@ -7,6 +7,9 @@
 
 | Command | Arguments | Description |
 |:-------:|:---------:|:-----------:|
+| !streammode | — | Disables dj cycle, required views |
+| !ytkey | (key) | Sets the YouTube API Key |
+| !sckey | (key) | Sets the SoundCloud API Key |
 | !afklimit | X | sets the maximum AFK time. |
 | !botname | (botname) | change the default bot name. |
 | !bouncer+ | — | toggle bouncer+. |
