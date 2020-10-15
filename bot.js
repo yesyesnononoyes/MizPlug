@@ -246,8 +246,8 @@
         status: false,
         name: 'mizBot',
         loggedInID: null,
-        scriptLink: 'https://raw.githack.com/yesyesnononoyes/custom/master/bot.js',
-        cmdLink: 'http://git.io/245Ppg',
+        scriptLink: 'https://raw.githack.com/yesyesnononoyes/MizPlug/master/bot.js',
+        cmdLink: 'https://github.com/yesyesnononoyes/MizPlug/blob/master/commands.md',
         chatLink: 'https://raw.githack.com/basicBot/source/master/lang/en.json',
         chat: null,
         loadChat: loadChat,
@@ -257,7 +257,7 @@
             botName: 'mizBot',
             language: 'english',
             chatLink: 'https://raw.githack.com/basicBot/source/master/lang/en.json',
-            scriptLink: 'https://raw.githack.com/yesyesnononoyes/custom/master/master/bot.js',
+            scriptLink: 'https://raw.githack.com/yesyesnononoyes/MizPlug/master/master/bot.js',
             roomLock: false, // Requires an extension to re-load the script
             startupCap: 1, // 1-200
             startupVolume: 0, // 0-100
@@ -265,10 +265,10 @@
             autowoot: true,
             autoskip: false,
             smartSkip: true,
-            cmdDeletion: true,
+            cmdDeletion: false,
             maximumAfk: 120,
             afkRemoval: true,
-            maximumDc: 60,
+            maximumDc: 30,
             bouncerPlus: false,
             blacklistEnabled: true,
             lockdownEnabled: false,
@@ -317,9 +317,9 @@
             songstats: true,
             commandLiteral: '!',
             blacklists: {
-                NSFW: 'https://raw.githack.com/yesyesnononoyes/custom/master/blacklists/NSFWlist.json',
-                OP: 'https://raw.githack.com/yesyesnononoyes/custom/master/blacklists/OPlist.json',
-                BANNED: 'https://raw.githack.com/yesyesnononoyes/custom/master/blacklists/BANNEDlist.json'
+                NSFW: 'https://raw.githack.com/yesyesnononoyes/MizPlug/master/blacklists/NSFWlist.json',
+                OP: 'https://raw.githack.com/yesyesnononoyes/MizPlug/master/blacklists/OPlist.json',
+                BANNED: 'https://raw.githack.com/yesyesnononoyes/MizPlug/master/blacklists/BANNEDlist.json'
             }
         },
         room: {
@@ -811,6 +811,8 @@
                         try {
                             (function(l) {
                                 $.get(basicBot.settings.blacklists[l], function(data) {
+                                    console.log(data)
+                                    //funny
                                     if (typeof data === 'string') {
                                         data = JSON.parse(data);
                                     }
@@ -1016,7 +1018,6 @@
             var blacklistSkip = setTimeout(function() {
                 var mid = obj.media.format + ':' + obj.media.cid;
                 for (var bl in basicBot.room.blacklists) {
-                    console.log(bl)
                     if (basicBot.settings.blacklistEnabled) {
                         if (basicBot.room.blacklists[bl].indexOf(mid) > -1) {
                             API.sendChat(subChat(basicBot.chat.isblacklisted, {
@@ -1362,7 +1363,7 @@
                 'gringo', 'fuder', 'foder', 'hua', 'ahue', 'modafuka', 'modafoka', 'mudafuka', 'mudafoka', 'ooooooooooooooo', 'foda'
             ],
             curses: [
-                'nigger', 'faggot', 'nigga', 'niqqa', 'niggar', 'f4g', ''
+                'nigger', 'faggot', 'nigga', 'niqqa', 'niggar', 'f4g', 'niqqar', ''
             ]
         },
         connectAPI: function() {
@@ -1520,7 +1521,7 @@
             }
 
             if(localStorage.getItem('minviews') == null) {
-                API.sendChat('The minimum ammount of views is now set to 10,000');
+                //API.sendChat('The minimum ammount of views is now set to 10,000');
                 localStorage.setItem('minviews', 10000)
             }
         },
@@ -3856,7 +3857,7 @@
 
             unbanCommand: {
                 command: 'unban',
-                rank: 'bouncer',
+                rank: 'manager',
                 type: 'startsWith',
                 functionality: function(chat, cmd) {
                     if (this.type === 'exact' && chat.message.length !== cmd.length) return void(0);
