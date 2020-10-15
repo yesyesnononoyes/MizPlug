@@ -24,16 +24,16 @@
         basicBot.status = false;
     };
 
-
-    // 
     var checkYT = function(e, m) {
         $.ajax({
-            url: 'https://www.googleapis.com/youtube/v3/videos?part=statistics&id=' + e + '&key= ' + ytkey
+            url: 'https://www.googleapis.com/youtube/v3/videos?part=statistics&id=' + e + '&key= ' + localStorage('ytkey')
         }).then(function(data) {
-            var views = data.items[0].statistics.viewCount;
+            views = data.items[0].statistics.viewCount;
+            minViews = localStorage.getItem('minviews');
+
             API.chatLog(' Views: ' + views);
             if (minViews > views) {
-                API.sendChat('@' + m + ' your song must have atleast ' + minViews + ' plays!')
+                API.sendChat('@' + m + ' your song must have atleast ' + minviews + ' plays!')
                 API.moderateForceSkip();
             }
         });
@@ -42,34 +42,38 @@
 
     var checkSC = function(e, m) {
         $.ajax({
-            url: 'https://api.soundcloud.com/tracks/' + e + '?client_id=' + sckey
+            url: 'https://api.soundcloud.com/tracks/' + e + '?client_id=' + localStorage.getItem('sckey')
         }).then(function(data) {
-            var views = data.playback_count;
+            views = data.playback_count;
+            minViews = localStorage.getItem('minviews');
             API.chatLog('Title: ' + data.title + ' Views: ' + data.playback_count);
+
+
             if (minViews > views) {
-                API.sendChat('@' + m + ' your song must have atleast ' + minViews + ' plays!')
+                console.log('based?')
+                API.sendChat('@' + m + ' your song must have atleast ' + localStorage.getItem('minviews') + ' plays!')
                 API.moderateForceSkip();
             }
         });
     }
 
-
-
     API.on(API.ADVANCE, data => {
 
+        console.log(data.media);
         id = data.media.cid;
         username = data.dj.username;
         title = data.media.title.toUpperCase();
         //words = banned.join(",");
 
-
+        if(localStorage.getItem('streamermode') == "true") {
         switch(data.media.format) {
-            case 1:
-                checkYT(id, username);
-            break;
-           case 2:
-                checkSC(id, username);
-            break;
+                case 1:
+                    checkYT(id, username);
+               break;
+               case 2:
+                    checkSC(id, username);
+                break;
+            }
         }
 
     });
@@ -238,7 +242,7 @@
     var basicBot = {
         version: '2.12.3',
         status: false,
-        name: 'basicBot',
+        name: 'mizBot',
         loggedInID: null,
         scriptLink: 'https://raw.githack.com/basicBot/source/master/basicBot.js',
         cmdLink: 'http://git.io/245Ppg',
@@ -288,8 +292,9 @@
                 ['history', 'This song is in the history. '],
                 ['mix', 'You played a mix, which is against the rules. '],
                 ['sound', 'The song you played had bad sound quality or no sound. '],
-                ['nsfw', 'The song you contained was NSFW (image or sound). '],
-                ['unavailable', 'The song you played was not available for some users. ']
+                ['tos', 'The song you contained was NSFW (image or sound). '],
+                ['unavailable', 'The song you played was not available for some users. '],
+                ['dmca', 'The song you played is prone to DMCA strikes!']
             ],
             afkpositionCheck: 15,
             afkRankCheck: 'ambassador',
@@ -1506,6 +1511,15 @@
                 botname: basicBot.settings.botName,
                 version: basicBot.version
             })));
+
+            if(localStorage.getItem('sckey') == null) {
+                API.sendChat('One or more API keys is not set! These are needed to enable streamer mode!');
+            }
+
+            if(localStorage.getItem('minviews') == null) {
+                API.sendChat('The minimum ammount of views is now set to 10,000');
+                localStorage.setItem('minviews', 10000)
+            }
         },
         commands: {
             executable: function(minRank, chat) {
@@ -1564,6 +1578,53 @@
                 }
             },
             */
+
+            streamerCommand: {
+                command: 'streamermode',
+                rank: 'manager',
+                type: 'exact',
+                functionality: function(chat, cmd) {
+                    if (this.type === 'exact' && chat.message.length !== cmd.length) return void(0);
+                    if (!basicBot.commands.executable(this.rank, chat)) return void(0);
+                    else {
+                        if(localStorage.getItem('streamermode') == "false" || null) {
+                            localStorage.setItem('streamermode', "true");
+                            API.moderateDJCycle(true);
+                            API.sendChat('/me Streamer mode enabled!');
+                        } else {
+                            // This also disables the view requirment
+                            localStorage.setItem('streamermode', "false");
+                            API.moderateDJCycle(false);
+                            API.sendChat('/me Streamer mode disabled!');
+                        }
+
+                    }
+                }
+            },
+
+            minViewsCommand: {
+                command: 'minviews',
+                rank: 'manager',
+                type: 'startsWith',
+                functionality: function(chat, cmd) {
+                    if (this.type === 'exact' && chat.message.length !== cmd.length) return void(0);
+                    if (!basicBot.commands.executable(this.rank, chat)) return void(0);
+                    else {
+                        var msg = chat.message;
+                        var args = msg.split(' ');
+
+                        console.log(args);
+
+                        if(args[1]) {
+                            localStorage.setItem('minviews', args[1]);
+                            API.sendChat('@' + chat.un + ' The minimum views needed is now set to: ' + args[1])
+                        } else {
+                            API.sendChat('@' + chat.un + ' The minimum amount of views needed is ' + localStorage.getItem('minviews'))
+                        }
+
+                    }
+                }
+            },
 
             ytKCommand: {
                 command: 'ytkey',
