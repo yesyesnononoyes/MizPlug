@@ -244,7 +244,7 @@
         status: false,
         name: 'mizBot',
         loggedInID: null,
-        scriptLink: 'https://raw.githack.com/basicBot/source/master/basicBot.js',
+        scriptLink: 'https://raw.githack.com/yesyesnononoyes/custom/master/basicBot.js',
         cmdLink: 'http://git.io/245Ppg',
         chatLink: 'https://raw.githack.com/basicBot/source/master/lang/en.json',
         chat: null,
@@ -254,8 +254,8 @@
         settings: {
             botName: 'basicBot',
             language: 'english',
-            chatLink: 'https://raw.githack.com/basicBot/source/master/lang/en.json',
-            scriptLink: 'https://raw.githack.com/basicBot/source/master/basicBot.js',
+            chatLink: 'https://raw.githack.com/yesyesnononoyes/source/master/lang/en.json',
+            scriptLink: 'https://raw.githack.com/yesyesnononoyes/source/master/basicBot.js',
             roomLock: false, // Requires an extension to re-load the script
             startupCap: 1, // 1-200
             startupVolume: 0, // 0-100
@@ -275,7 +275,7 @@
             cycleGuard: true,
             maximumCycletime: 10,
             voteSkip: false,
-            voteSkipLimit: 10,
+            voteSkipLimit: 30,
             historySkip: false,
             timeGuard: true,
             strictTimeGuard: true,
@@ -315,9 +315,9 @@
             songstats: true,
             commandLiteral: '!',
             blacklists: {
-                NSFW: 'https://raw.githack.com/basicBot/custom/master/blacklists/NSFWlist.json',
-                OP: 'https://raw.githack.com/basicBot/custom/master/blacklists/OPlist.json',
-                BANNED: 'https://raw.githack.com/basicBot/custom/master/blacklists/BANNEDlist.json'
+                NSFW: 'https://raw.githack.com/yesyesnononoyes/custom/master/blacklists/NSFWlist.json',
+                OP: 'https://raw.githack.com/yesyesnononoyes/custom/master/blacklists/OPlist.json',
+                BANNED: 'https://raw.githack.com/yesyesnononoyes/custom/master/blacklists/BANNEDlist.json'
             }
         },
         room: {
