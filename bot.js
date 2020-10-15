@@ -1589,12 +1589,12 @@
                     else {
                         if(localStorage.getItem('streamermode') == "false" || null) {
                             localStorage.setItem('streamermode', "true");
-                            API.moderateDJCycle(true);
+                            API.moderateDJCycle(false);
                             API.sendChat('/me Streamer mode enabled!');
                         } else {
                             // This also disables the view requirment
                             localStorage.setItem('streamermode', "false");
-                            API.moderateDJCycle(false);
+                            API.moderateDJCycle(true);
                             API.sendChat('/me Streamer mode disabled!');
                         }
 
