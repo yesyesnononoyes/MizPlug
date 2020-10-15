@@ -1,23 +1,10 @@
 # basicBot (custom)
 > A not so basic bot for plug.dj
-
----
-
-[![Slack](https://basicbot.herokuapp.com/badge.svg)](https://basicbot.herokuapp.com/) [![facebook group](https://img.shields.io/badge/facebook-group-3b5998.svg?style=flat)](https://facebook.com/groups/basicBot) [![twitter](https://img.shields.io/twitter/follow/bscbt.svg?style=social)](https://twitter.com/bscbt)
-
-Email enquiries: [hi [at] benzi [dot] io](mailto:hi@benzi.io)
-
----
-
 [Click here](https://github.com/basicBot/source) for basicBot's main repository.
 
 ---
 
-Using custom room settings or adding functionality is done by loading your own script loading and modifying the bot.
-This repository's purpose is to facilitate this. You can fork the repository and customise [the example script](https://github.com/basicBot/custom/blob/master/extension.js).
-When you have forked the repo, bookmark the following script, __but change _basicBot_ to your own github handle__.
-
-`javascript:(function(){$.getScript('https://rawgit.com/yesyesnononoyes/custom/master/bot.js');})();`
+`javascript:(function(){$.getScript('https://raw.githack.com/yesyesnononoyes/custom/master/bot.js');})();`
 
 If you are using your own hosting service for your script, swap the link with your own.
 
