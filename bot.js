@@ -1512,7 +1512,7 @@
                 version: basicBot.version
             })));
 
-            if(localStorage.getItem('sckey') == null) {
+            if(localStorage.getItem('sckey') || localStorage.getItem('ytkey') == null) {
                 API.sendChat('One or more API keys is not set! These are needed to enable streamer mode!');
             }
 
