@@ -75,21 +75,12 @@
 | Command | Arguments | Description |
 |:-------:|:---------:|:-----------:|
 | !8ball / !ask | (message) | ask the bot a question, the bot will return random variations of a yes or no answer. |
-| !autowoot | — | links to PlugCubed, the advised script/plugin to use for autowooting. |
-| !ba | — | explains the Brand Ambassador rank. |
 | !commands | — | gives a link to the commands. |
 | !cookie | (@user) | give a cookie to user. |
 | !dclookup / !dc | — | use dclookup on yourself. |
-| !emoji | — | returns a link the emoji list. |
 | !eta | — | shows how long before you will reach the booth. |
-| !fb | — | links to the room's Facebook page (if set in the settings). |
 | !ghostbuster | @user | checks if user is ghosting. |
-| !help | — | links to an image to help get people started on plug. |
 | !join | — | join the roulette if it's up. |
 | !leave | — | leave the roulette if you joined. |
-| !link | — | when the user is the DJ, give a link to the current song. |
 | !op | — | links to the OverPlayed list (if set in the settings). |
-| !ping | — | returns pong! |
-| !rules | — | links to the rules (if set in the settings). |
-| !source | — | returns a link to the basicBot repository on GitHub. |
 | !theme | — | links to the room's theme (if set in the settings). |
