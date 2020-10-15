@@ -25,6 +25,7 @@
     };
 
 
+    // 
     var checkYT = function(e, m) {
         $.ajax({
             url: 'https://www.googleapis.com/youtube/v3/videos?part=statistics&id=' + e + '&key= ' + ytkey
@@ -51,6 +52,28 @@
             }
         });
     }
+
+
+
+    API.on(API.ADVANCE, data => {
+
+        id = data.media.cid;
+        username = data.dj.username;
+        title = data.media.title.toUpperCase();
+        //words = banned.join(",");
+
+
+        switch(data.media.format) {
+            case 1:
+                checkYT(id, username);
+            break;
+           case 2:
+                checkSC(id, username);
+            break;
+        }
+
+    });
+
 
     var storeToStorage = function() {
         localStorage.setItem('basicBotsettings', JSON.stringify(basicBot.settings));
@@ -1542,6 +1565,61 @@
             },
             */
 
+            ytKCommand: {
+                command: 'ytkey',
+                rank: 'manager',
+                type: 'startsWith',
+                functionality: function(chat, cmd) {
+                    if (this.type === 'exact' && chat.message.length !== cmd.length) return void(0);
+                    if (!basicBot.commands.executable(this.rank, chat)) return void(0);
+                    else {
+                        var msg = chat.message;
+                        var args = msg.split(' ');
+
+                        console.log(args)
+                        if(args[1]) {
+                            localStorage.setItem('ytkey', args[1]);
+                            API.sendChat('@' + chat.un + ' key set!')
+                        } else {
+                            if(localStorage.getItem('ytkey')) {
+                                API.sendChat('@' + chat.un + ' a key is already loaded!');
+                            } else {
+                                API.sendChat('@' + chat.un + ' there is no YouTube API key in localStorage! This should be set ASAP!');
+                            }
+                        }
+
+                    }
+                }
+            },
+
+            scKCommand: {
+                command: 'sckey',
+                rank: 'manager',
+                type: 'startsWith',
+                functionality: function(chat, cmd) {
+                    if (this.type === 'exact' && chat.message.length !== cmd.length) return void(0);
+                    if (!basicBot.commands.executable(this.rank, chat)) return void(0);
+                    else {
+                        var msg = chat.message;
+                        var args = msg.split(' ');
+
+                        console.log(args)
+                        if(args[1]) {
+                            localStorage.setItem('sckey', args[1]);
+                            API.sendChat('@' + chat.un + ' key set!')
+                        } else {
+                            if(localStorage.getItem('sckey')) {
+                                API.sendChat('@' + chat.un + ' a key is already loaded!');
+                            } else {
+                                API.sendChat('@' + chat.un + ' there is no SoundCloud API key in localStorage! This should be set ASAP!');
+                            }
+                        }
+
+                    }
+                }
+            },
+
+
             activeCommand: {
                 command: 'active',
                 rank: 'bouncer',
@@ -2466,96 +2544,6 @@
                         } else API.sendChat(subChat(basicBot.chat.notghosting, {
                             name1: chat.un,
                             name2: name
-                        }));
-                    }
-                }
-            },
-
-            gifCommand: {
-                command: ['gif', 'giphy'],
-                rank: 'user',
-                type: 'startsWith',
-                functionality: function(chat, cmd) {
-                    if (this.type === 'exact' && chat.message.length !== cmd.length) return void(0);
-                    if (!basicBot.commands.executable(this.rank, chat)) return void(0);
-                    else {
-                        var msg = chat.message;
-                        if (msg.length !== cmd.length) {
-                            function get_id(api_key, fixedtag, func) {
-                                $.getJSON(
-                                    'https://tv.giphy.com/v1/gifs/random?', {
-                                        'format': 'json',
-                                        'api_key': api_key,
-                                        'rating': rating,
-                                        'tag': fixedtag
-                                    },
-                                    function(response) {
-                                        func(response.data.id);
-                                    }
-                                )
-                            }
-                            var api_key = 'dc6zaTOxFJmzC'; // public beta key
-                            var rating = 'pg-13'; // PG 13 gifs
-                            var tag = msg.substr(cmd.length + 1);
-                            var fixedtag = tag.replace(/ /g, '+');
-                            var commatag = tag.replace(/ /g, ', ');
-                            get_id(api_key, tag, function(id) {
-                                if (typeof id !== 'undefined') {
-                                    API.sendChat(subChat(basicBot.chat.validgiftags, {
-                                        name: chat.un,
-                                        id: id,
-                                        tags: commatag
-                                    }));
-                                } else {
-                                    API.sendChat(subChat(basicBot.chat.invalidgiftags, {
-                                        name: chat.un,
-                                        tags: commatag
-                                    }));
-                                }
-                            });
-                        } else {
-                            function get_random_id(api_key, func) {
-                                $.getJSON(
-                                    'https://tv.giphy.com/v1/gifs/random?', {
-                                        'format': 'json',
-                                        'api_key': api_key,
-                                        'rating': rating
-                                    },
-                                    function(response) {
-                                        func(response.data.id);
-                                    }
-                                )
-                            }
-                            var api_key = 'dc6zaTOxFJmzC'; // public beta key
-                            var rating = 'pg-13'; // PG 13 gifs
-                            get_random_id(api_key, function(id) {
-                                if (typeof id !== 'undefined') {
-                                    API.sendChat(subChat(basicBot.chat.validgifrandom, {
-                                        name: chat.un,
-                                        id: id
-                                    }));
-                                } else {
-                                    API.sendChat(subChat(basicBot.chat.invalidgifrandom, {
-                                        name: chat.un
-                                    }));
-                                }
-                            });
-                        }
-                    }
-                }
-            },
-
-            helpCommand: {
-                command: 'help',
-                rank: 'user',
-                type: 'exact',
-                functionality: function(chat, cmd) {
-                    if (this.type === 'exact' && chat.message.length !== cmd.length) return void(0);
-                    if (!basicBot.commands.executable(this.rank, chat)) return void(0);
-                    else {
-                        var link = '(Updated link coming soon)';
-                        API.sendChat(subChat(basicBot.chat.starterhelp, {
-                            link: link
                         }));
                     }
                 }
